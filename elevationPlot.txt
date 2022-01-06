@@ -1,0 +1,59 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<canvas id="myChart" width="800" height="200"></canvas>
+<script>
+  const labels = ['distance', 'elevation'];
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      fill: 'stack',
+      label: 'Elevation',
+      backgroundColor: 'rgba(216, 231, 199,0.8)',
+      borderColor: 'rgb(216, 231, 199)',
+      pointRadius: 0,
+    }]
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Distance (km)'
+          },
+          type: 'linear',
+          max: 10.0,
+          min: 0,
+          ticks: {
+            stepSize: 0.5
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Elevation (m)'
+          },
+          type: 'linear',
+          ticks: {
+            stepSize: 20
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  };
+</script>
+
+<script>
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+</script>
