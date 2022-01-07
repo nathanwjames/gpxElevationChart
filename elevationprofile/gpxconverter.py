@@ -1,8 +1,6 @@
 from gpx_converter import Converter
 from math import radians, cos, sin, asin, sqrt
-import os
-
-fpath = "GPX/"
+import os, json
 
 def haversine(lon1, lat1, lon2, lat2):
     """
@@ -21,33 +19,27 @@ def haversine(lon1, lat1, lon2, lat2):
     return c * r
 
 #array of files to read in
-def fname(fpath):
-    file_list = os.listdir(fpath)
-    #print("File List: {0}".format(file_list))
-    return file_list
+def fname():
+    file_list = os.listdir(r)
+    print(file_list)
 
 def MaxiMini(distToEle):
-    mod = 100
-    MaxMinArray = []
-    #get maximum and minimum elevation
-    maxi = distToEle[max(distToEle.keys(), key=(lambda k: distToEle[k]))]
-    mini = distToEle[min(distToEle.keys(), key=(lambda k: distToEle[k]))]
-    MaxMinArray.append(round(mini-mini%mod))
-    MaxMinArray.append(round(maxi+maxi%mod))
+    MaxMinArray [3] = 0
+    maxi = html[max(html.keys(), key=(lambda k: html[k]))]
+    mini = html[min(html.keys(), key=(lambda k: html[k]))]
+    MaxMinArray[0] = round(mini-mini%mod)
+    MaxMinArray[1] = round(maxi+maxi%mod)
+
     print('Maximum Plot Elevation: ', MaxMinArray[0])
     print('Minimum Plot Elevation: ', MaxMinArray[1])
-    #print('Maximum Plot Distance: ', MaxMinArray[2])
+    print('Maximum Plot Distance: ', MaxMinArray[2])
 
     return MaxMinArray
 
-def gpxElevationPlotGen(gpxFile):
-    """
-    Turns any GPX file into a
-    """
-    print(gpxFile)
-    np_array = Converter(gpxFile).gpx_to_numpy_array()
-    #print(np_array)
+for file in file_list:
+    np_array = Converter(input_file='BallHut.gpx').gpx_to_numpy_array()
     dist = 0
+    #mod = 100
     html = {}
     html[dist] = np_array[0][3]
 
@@ -56,7 +48,7 @@ def gpxElevationPlotGen(gpxFile):
         html[dist] = np_array[n+1][3]
 
     MaxMinArray = MaxiMini(html)
-    with open("elevationPlot.txt", "r") as f:
+    with open("elevationPlot.txt", "r") as f: #change to html instead of txt
         contents = f.readlines()
 
     data = "\t\t  data: {0},\n".format(html)
@@ -65,14 +57,8 @@ def gpxElevationPlotGen(gpxFile):
 
     contents.insert(13, data)
     contents.insert(40, elev)
-    folder = gpxFile.find(fpath) + len(fpath)
-    ext = gpxFile.find('gpx', folder)
-    htmlFile = gpxFile[folder:ext] + "html"
-    print(htmlFile)
-    with open(htmlFile, "w") as f:
+
+
+    with open("BallHut.html", "w") as f:
         contents = "".join(contents)
         f.write(contents)
-
-file_list = fname(fpath)
-for file in file_list:
-    gpxElevationPlotGen(fpath + file)
